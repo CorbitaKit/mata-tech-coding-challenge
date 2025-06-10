@@ -21,7 +21,6 @@ class CsvReaderService
 
             $transformer = app(DataTransformerFactory::class);
             $data = $transformer->transform($model, $record);
-
             $service->create($data);
         }
     }

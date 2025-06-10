@@ -2,11 +2,18 @@
 
 namespace App\Factories;
 
+use App\Services\API\OrderService;
+use App\Services\API\PizzaService;
 use App\Services\API\PizzaTypeService;
+use Carbon\Carbon;
 
 class DataTransformerFactory
 {
-    public function __construct(protected PizzaTypeService $pizzaTypeService){}
+    public function __construct(
+        protected PizzaTypeService $pizzaTypeService,
+        protected PizzaService $pizzaService,
+        protected OrderService $orderService
+    ){}
     public  function transform(string $model, array $record): array
     {
         return match ($model) {
@@ -22,7 +29,25 @@ class DataTransformerFactory
                 'size' => $record['size'],
                 'price' => $record['price']
             ],
+            "Order" => [
+                'ordered_at' =>  $this->transformDateAndTimeIntoTimeStamp($record['date'], $record['time']),
+                'slug' => $record['order_id']
+            ],
+            "OrderDetail" => [
+                'pizza_id' => $this->pizzaService->findBySlug($record['slug']),
+                'order_id' => $this->orderService->findBySlug($record['slug']),
+                'quantity' => $record['quantity'],
+                'slug' => $record['order_detail_id']
+            ],
             default => throw new \InvalidArgumentException("No transformer for model: {$model}")
         };
+    }
+
+    private function transformDateAndTimeIntoTimeStamp(string $date, string $time): string
+    {
+
+        $carbon = Carbon::createFromFormat('Y-m-d H:i:s', "$date $time");
+
+        return $carbon->timestamp;
     }
 }
