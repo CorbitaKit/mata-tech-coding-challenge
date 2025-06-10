@@ -34,19 +34,21 @@ class ImportCsvData extends Command
         $path = $this->argument('file');
         $model = $this->argument('model');
 
+
+
         if (! file_exists($path)) {
              $this->error("❌ File not found at path: $path");
             return;
         }
 
         $modelClass = $this->getModelClass($model);
-
          if (!class_exists($modelClass)) {
             $this->error("❌ Model class does not exist: $modelClass");
             return;
         }
 
         $this->csvReaderService->execute($path, $model);
+
 
     }
 
