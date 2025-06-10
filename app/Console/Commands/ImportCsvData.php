@@ -47,7 +47,8 @@ class ImportCsvData extends Command
             return;
         }
 
-        $this->csvReaderService->execute($path, $modelClass);
+        $this->csvReaderService->execute($path, $model);
+
 
     }
 

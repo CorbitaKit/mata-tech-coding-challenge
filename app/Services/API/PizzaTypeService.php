@@ -2,16 +2,19 @@
 
 namespace App\Services\API;
 
-use App\Repositories\API\PizzaRepository;
+use App\Repositories\API\PizzaTypeRepository;
 use App\Services\Service;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class PizzaService extends Service
+class PizzaTypeService extends Service
 {
-    public function __construct(PizzaRepository $pizzaRepository)
+    public function __construct(
+        PizzaTypeRepository $repo,
+        protected IngredientService $ingredientService
+    )
     {
-        parent::__construct($pizzaRepository);
+        parent::__construct($repo);
     }
 
     public function findBySlug(string $slug): int|null
@@ -26,7 +29,14 @@ class PizzaService extends Service
         }
 
         return DB::transaction(function () use ($data){
-            return $this->repo->create($data);
+            $model = $this->repo->create($data);
+
+            $ingredientIds = $this->ingredientService->insert($data['ingredients']);
+
+            $model->ingredients()->attach($ingredientIds);
+
+            return $model;
+
         });
     }
 }
