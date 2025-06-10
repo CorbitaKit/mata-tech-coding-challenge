@@ -12,5 +12,9 @@ class CsvReaderService
         $csv->setHeaderOffset(0);
 
         $records = $csv->getRecords();
+
+        foreach ($records as $record) {
+            dd($record['pizza_id']);
+        }
     }
 }
