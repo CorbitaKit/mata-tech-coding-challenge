@@ -7,7 +7,7 @@ class ServiceFactory
     public static function resolve(string $model): object
     {
         $modelName = class_basename($model);
-        $serviceClass = "App\\Services\\API\\{$modelName}Service";
+        $serviceClass = "App\\Services\\API\\v1\\{$modelName}Service";
 
         if (!class_exists($serviceClass)) {
             throw new \InvalidArgumentException("Service for {$modelName} not found.");
