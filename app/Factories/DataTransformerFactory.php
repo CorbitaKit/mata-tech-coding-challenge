@@ -34,10 +34,10 @@ class DataTransformerFactory
                 'slug' => $record['order_id']
             ],
             "OrderDetail" => [
-                'pizza_id' => $this->pizzaService->findBySlug($record['slug']),
-                'order_id' => $this->orderService->findBySlug($record['slug']),
+                'pizza_id' => $this->pizzaService->findBySlug($record['pizza_id']),
+                'order_id' => $this->orderService->findBySlug($record['order_id']),
                 'quantity' => $record['quantity'],
-                'slug' => $record['order_detail_id']
+                'slug' => $record['order_details_id']
             ],
             default => throw new \InvalidArgumentException("No transformer for model: {$model}")
         };
@@ -48,6 +48,6 @@ class DataTransformerFactory
 
         $carbon = Carbon::createFromFormat('Y-m-d H:i:s', "$date $time");
 
-        return $carbon->timestamp;
+        return  $carbon->toDateTimeString();
     }
 }
