@@ -2,6 +2,7 @@
 
 namespace App\Services\CSV;
 
+use App\Jobs\ImportCsvChunkJob;
 use App\Jobs\ImportCsvRowJob;
 use Illuminate\Bus\Batch;
 use Illuminate\Support\Facades\Bus;
@@ -18,26 +19,24 @@ class CsvReaderService
 
         $records = iterator_to_array($csv->getRecords());
 
-        $chunks = array_chunk($records, 500);
+        $chunks = array_chunk($records, 1000);
 
-        foreach ($chunks as $index => $chunk) {
-            $jobs = [];
+        $jobs = [];
 
-            foreach ($chunk as $record) {
-                $jobs[] = new ImportCsvRowJob($model, $record);
-            }
-
-            Bus::batch($jobs)
-                ->then(function (Batch $batch) use ($index) {
-                    Log::info("✅ Batch #$index completed: {$batch->id}");
-                })
-                ->catch(function (Batch $batch, Throwable $e) {
-                    Log::error("❌ Batch #{$batch->id} failed: {$e->getMessage()}");
-                })
-                ->finally(function (Batch $batch) use ($index) {
-                    Log::info("📦 Batch #$index finished.");
-                })
-                ->dispatch();
+        foreach ($chunks as $chunk) {
+            $jobs[] = new ImportCsvRowJob($model, $chunk);
         }
+
+        Bus::batch($jobs)
+            ->then(function (Batch $batch) {
+                Log::info("✅ Batch completed: {$batch->id}");
+            })
+            ->catch(function (Batch $batch, Throwable $e) {
+                Log::error("❌ Batch #{$batch->id} failed: {$e->getMessage()}");
+            })
+            ->finally(function (Batch $batch) {
+                Log::info("📦 Batch finished: {$batch->id}");
+            })
+            ->dispatch();
     }
 }

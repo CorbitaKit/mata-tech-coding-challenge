@@ -16,14 +16,15 @@ class ImportCsvRowJob implements ShouldQueue
 
     protected array $record;
     protected string $model;
+    protected array $chunk;
 
     /**
      * Create a new job instance.
      */
-    public function __construct(string $model, array $record)
+    public function __construct(string $model, array $chunk)
     {
         $this->model = $model;
-        $this->record = $record;
+        $this->chunk = $chunk;
     }
 
     /**
@@ -31,10 +32,15 @@ class ImportCsvRowJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $transformer = app(DataTransformerFactory::class);
-        $data = $transformer->transform($this->model, $this->record);
+         $transformer = app(DataTransformerFactory::class);
+         $service = ServiceFactory::resolve($this->model);
+        foreach ($this->chunk as $record) {
+            $data = $transformer->transform($this->model, $record);
+            $service->create($data);
+        }
 
-        $service = ServiceFactory::resolve($this->model);
-        $service->create($data);
+
+
+
     }
 }
