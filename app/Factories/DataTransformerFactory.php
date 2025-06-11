@@ -2,9 +2,9 @@
 
 namespace App\Factories;
 
-use App\Services\API\OrderService;
-use App\Services\API\PizzaService;
-use App\Services\API\PizzaTypeService;
+use App\Services\API\v1\OrderService;
+use App\Services\API\v1\PizzaService;
+use App\Services\API\v1\PizzaTypeService;
 use Carbon\Carbon;
 
 class DataTransformerFactory
