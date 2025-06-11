@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->timestamp('ordered_at')->nullable();
+            $table->datetime('ordered_at')->nullable();
             $table->integer('slug');
         });
     }
