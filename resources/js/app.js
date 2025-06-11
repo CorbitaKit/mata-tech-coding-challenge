@@ -6,8 +6,9 @@ import { router } from './router/routes'
 import Aura from '@primeuix/themes/aura';
 import InputText from 'primevue/inputtext'
 import Password from 'primevue/password'
-// import Button from 'primevue/button'
-// import '@primeicons/primeicons.css'
+
+import Toast from 'primevue/toast';
+import ToastService from 'primevue/toastservice';
 
 const app = createApp(App)
 app.use(PrimeVue, {
@@ -19,9 +20,10 @@ app.use(PrimeVue, {
     }
 })
 app.use(router)
-
+app.use(ToastService)
 app.component('p-input-text', InputText)
 app.component('p-password', Password)
 app.component('p-button', Button)
+app.component('p-toast', Toast)
 
 app.mount('#app')
