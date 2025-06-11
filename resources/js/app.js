@@ -12,8 +12,8 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Toast from 'primevue/toast';
 import ToastService from 'primevue/toastservice';
-import Dropdown from 'primevue/dropdown'
-import Calendar from 'primevue/calendar'
+import Select from 'primevue/dropdown'
+import DatePicker from 'primevue/calendar'
 
 import 'primeicons/primeicons.css'
 
@@ -36,6 +36,6 @@ app.component('Card', Card)
 app.component('Chart', Chart)
 app.component('Column', Column)
 app.component('DataTable', DataTable)
-app.component('Dropdown', Dropdown)
-app.component('Calendar', Calendar)
+app.component('Dropdown', Select)
+app.component('Calendar', DatePicker)
 app.mount('#app')

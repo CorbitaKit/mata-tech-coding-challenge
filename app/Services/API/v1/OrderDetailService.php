@@ -5,6 +5,7 @@ namespace App\Services\API\v1;
 use App\Repositories\API\v1\OrderDetailRepository;
 use App\Services\Service;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class OrderDetailService extends Service
 {
@@ -15,11 +16,18 @@ class OrderDetailService extends Service
 
     public function create(array $data): Model
     {
-        if ($data['source'] === 'csv') {
-            $this->repo->insert($data);
-            return $this->repo->latest();
-        }
-
         return $this->repo->create($data);
     }
+
+    public function getTotalSales(): float
+    {
+        return $this->repo->getTotalSales();
+    }
+
+    public function topSellingPizzas(): Collection
+    {
+        return $this->repo->topSellingPizzas();
+    }
+
+
 }

@@ -5,6 +5,7 @@ namespace App\Services\API\v1;
 use App\Repositories\API\v1\IngredientRepository;
 use App\Services\Service;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class IngredientService extends Service
 {
@@ -35,7 +36,10 @@ class IngredientService extends Service
         }
 
         return $ingredientIds;
+    }
 
-
+    public function topSellingIngredients(): Collection
+    {
+        return $this->repo->topSellingIngredients();
     }
 }

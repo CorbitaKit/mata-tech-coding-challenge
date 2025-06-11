@@ -22,6 +22,7 @@ const handleLogin = () => {
     })
     .then(res => {
         const token = res.data.access_token
+        localStorage.setItem("auth_token", token)
         api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
         router.push({ name: 'dashboard' })

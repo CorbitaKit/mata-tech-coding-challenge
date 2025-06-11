@@ -4,10 +4,12 @@ namespace App\Repositories\API\v1;
 
 use App\Models\OrderDetail;
 use App\Repositories\Repository;
+use App\Traits\Sales;
 use Illuminate\Database\Eloquent\Model;
 
 class OrderDetailRepository extends Repository
 {
+    use Sales;
     public function __construct(OrderDetail $orderDetail)
     {
         parent::__construct($orderDetail);
