@@ -35,7 +35,20 @@ class PizzaTypeService extends Service
 
             $model->ingredients()->attach($ingredientIds);
 
-            return $model;
+            return $model->load('ingredients');
+
+        });
+    }
+
+    public function update(array $data, int $id): Model
+    {
+        return DB::transaction(function () use ($data, $id) {
+            $model = $this->repo->update($data, $id);
+            $ingredients = $this->ingredientService->insert($data['ingredients']);
+
+            $model->ingredients()->sync($ingredients);
+
+            return $model->load('ingredients');
 
         });
     }

@@ -1,19 +1,18 @@
 <?php
 
-use Illuminate\Support\Facades\App;
-
 require __DIR__ . '/../vendor/autoload.php';
 
-$appEnv = env('APP_ENV');
-$dbConnection = env('DB_CONNECTION');
-$dbName = env('DB_DATABASE');
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../', '.env.testing');
+$dotenv->load();
 
+$appEnv = $_ENV['APP_ENV'] ?? 'production';
+$dbConnection = $_ENV['DB_CONNECTION'] ?? 'mysql';
+$dbName = $_ENV['DB_DATABASE'] ?? '';
 
 if ($appEnv !== 'testing') {
     fwrite(STDERR, "❌ Aborting: Tests must run in 'testing' environment, not '$appEnv'!\n");
     exit(1);
 }
-
 
 $forbiddenConnections = ['mysql', 'pgsql', 'sqlsrv'];
 $forbiddenDbNames = ['production', 'prod', 'live'];
