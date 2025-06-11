@@ -2,8 +2,11 @@
 import { ref } from 'vue'
 import api from '@/axios'
 import { useToast } from "primevue/usetoast";
+import { useRouter } from 'vue-router'
 const toast = useToast();
 
+
+const router = useRouter()
 const show = () => {
     toast.add({ severity: 'error', summary: 'Error Message', detail: 'Invalid Credentials', life: 3000 });
 };
@@ -19,11 +22,14 @@ const handleLogin = () => {
     })
     .then(res => {
         const token = res.data.access_token
-         api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+        router.push({ name: 'dashboard' })
     }).catch(err => {
        if (err.status == 422) {
          errors.value = err.response.data.errors
        } else {
+        console.log(err)
         show()
        }
     })
