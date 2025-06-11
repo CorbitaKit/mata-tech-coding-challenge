@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\API;
+namespace App\Services\API\v1;
 
-use App\Repositories\API\PizzaTypeRepository;
+use App\Repositories\API\v1\PizzaTypeRepository;
 use App\Services\Service;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;

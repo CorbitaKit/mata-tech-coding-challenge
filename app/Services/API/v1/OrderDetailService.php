@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\API;
+namespace App\Services\API\v1;
 
-use App\Repositories\API\OrderDetailRepository;
+use App\Repositories\API\v1\OrderDetailRepository;
 use App\Services\Service;
 
 class OrderDetailService extends Service
